@@ -577,6 +577,22 @@ string SchedulingSystem::getRunningProcessName()
 }
 
 /**
+ * @brief all processes done
+ *
+ * this function runs a loop checking if all processes are done
+ * if all are done this function @returns true otherwise it returns false.
+ */
+bool SchedulingSystem::allProcessesDone() const
+{
+  for (int i = 0; i < numProcesses; i++)
+  {
+    if (!process[i].done)
+      return false;
+  }
+  return true;
+  // process in the processtable if the process is not done return false
+}
+/**
  * @brief update process data
  *
  * Update all current ready/running processes statistics and

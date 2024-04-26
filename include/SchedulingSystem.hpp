@@ -185,6 +185,8 @@ public:
   bool isCpuIdle();
   // task 1_4 function
   string getRunningProcessName();
+  // task 2 function
+  bool allProcessesDone() const;
 };
 
 #endif // SCHEDULING_SYSTEM_HPP
