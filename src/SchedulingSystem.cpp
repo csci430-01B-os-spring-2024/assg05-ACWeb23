@@ -521,6 +521,60 @@ void SchedulingSystem::checkProcessPreemption()
     cpu = IDLE;
   }
 }
+/**
+ * @brief get system time
+ *
+ * This function reads the system time and @returns an interger.
+ **/
+int SchedulingSystem::getSystemTime()
+{
+  return this->systemTime;
+}
+
+/**
+ * @brief get nummber of processes
+ *
+ * The getNumProcesses() function reads the number of active processes
+ * and @returns an interger value corrosponding to the number active
+ */
+int SchedulingSystem::getNumProcesses()
+{
+  return this->numProcesses;
+}
+
+/**
+ * @brief is CPU idle
+ *
+ * this function checks the number of running processes and @returns true if
+ * the number of running processes is 0.
+ */
+bool SchedulingSystem::isCpuIdle()
+{
+  if (getNumProcesses() > 0)
+  {
+    return false;
+  }
+  else
+    return true;
+}
+
+/**
+ * @brief get running process name
+ *
+ * this function reads a processes name from an array and @returns a string
+ * if there is no running process the function returns IDLE
+ */
+string SchedulingSystem::getRunningProcessName()
+{
+  if (isCpuIdle())
+  {
+    return "IDLE";
+  }
+  else
+  {
+    return process[cpu].name;
+  }
+}
 
 /**
  * @brief update process data
