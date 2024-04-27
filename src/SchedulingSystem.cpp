@@ -521,7 +521,94 @@ void SchedulingSystem::checkProcessPreemption()
     cpu = IDLE;
   }
 }
+/**
+ * @brief get system time
+ *
+ * This function reads the system time and @returns an interger.
+ **/
+int SchedulingSystem::getSystemTime()
+{
+  return this->systemTime;
+}
 
+/**
+ * @brief get nummber of processes
+ *
+ * The getNumProcesses() function reads the number of active processes
+ * and @returns an interger value corrosponding to the number active
+ */
+int SchedulingSystem::getNumProcesses()
+{
+  return this->numProcesses;
+}
+
+/**
+ * @brief is CPU idle
+ *
+ * this function checks the number of running processes and @returns true if
+ * the number of running processes is 0.
+ */
+bool SchedulingSystem::isCpuIdle()
+{
+  return (this->cpu == IDLE);
+}
+
+/**
+ * @brief get running process name
+ *
+ * this function reads a processes name from an array and @returns a string
+ * if there is no running process the function returns IDLE
+ */
+string SchedulingSystem::getRunningProcessName()
+{
+  if (isCpuIdle())
+  {
+    return "IDLE";
+  }
+  else
+  {
+    return process[cpu].name;
+  }
+}
+
+/**
+ * @brief all processes done
+ *
+ * this function runs a loop checking if all processes are done
+ * if all are done this function @returns true otherwise it returns false.
+ */
+bool SchedulingSystem::allProcessesDone() const
+{
+  for (int i = 0; i < numProcesses; i++)
+  {
+    if (!process[i].done)
+      return false;
+  }
+  return true;
+  // process in the processtable if the process is not done return false
+}
+
+void SchedulingSystem::dispatchCpuIfIdle()
+{
+  /*if cpu is idle
+  ask the policy to dispatch the next process to run the dispatch method returns the Pid of the process,
+    set cpu to be this process id update the startTime of this process if it was never started before*/
+  if (isCpuIdle())
+  {
+    for (Pid pid = 0; pid < numProcesses; pid++)
+    {
+
+      cout << "(" << process[pid].name << " " << process[pid].arrivalTime << " " << process[pid].serviceTime << endl;
+
+      if (!process[pid].done)
+      {
+        process[pid].startTime = getSystemTime();
+        cpu = pid;
+        policy->newProcess(pid);
+      }
+    }
+  }
+}
 /**
  * @brief update process data
  *
