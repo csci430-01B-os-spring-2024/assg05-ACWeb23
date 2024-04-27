@@ -550,12 +550,7 @@ int SchedulingSystem::getNumProcesses()
  */
 bool SchedulingSystem::isCpuIdle()
 {
-  if (getNumProcesses() > 0)
-  {
-    return false;
-  }
-  else
-    return true;
+  return (this->cpu == IDLE);
 }
 
 /**
@@ -591,6 +586,28 @@ bool SchedulingSystem::allProcessesDone() const
   }
   return true;
   // process in the processtable if the process is not done return false
+}
+
+void SchedulingSystem::dispatchCpuIfIdle()
+{
+  /*if cpu is idle
+  ask the policy to dispatch the next process to run the dispatch method returns the Pid of the process,
+    set cpu to be this process id update the startTime of this process if it was never started before*/
+  if (isCpuIdle())
+  {
+    for (Pid pid = 0; pid < numProcesses; pid++)
+    {
+
+      cout << "(" << process[pid].name << " " << process[pid].arrivalTime << " " << process[pid].serviceTime << endl;
+
+      if (!process[pid].done)
+      {
+        process[pid].startTime = getSystemTime();
+        cpu = pid;
+        policy->newProcess(pid);
+      }
+    }
+  }
 }
 /**
  * @brief update process data
